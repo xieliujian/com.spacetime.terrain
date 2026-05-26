@@ -1,0 +1,16 @@
+{
+  "name": "com.spacetime.terrain",
+  "version": "1.0.0",
+  "displayName": "SpaceTime Terrain",
+  "description": "Unity Terrain to Mesh export pipeline for SpaceTime large-scale scene rendering.",
+  "keywords": [
+    "terrain",
+    "mesh",
+    "export",
+    "lod"
+  ],
+  "unity": "2022.3",
+  "dependencies": {
+    "com.spacetime.core": "1.0.0"
+  }
+}

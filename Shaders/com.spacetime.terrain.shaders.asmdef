@@ -1,0 +1,16 @@
+{
+    "name": "com.spacetime.terrain.shaders",
+    "rootNamespace": "ST.Terrain",
+    "references": [
+        "com.spacetime.terrain.runtime"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -1,0 +1,27 @@
+{
+    "name": "com.spacetime.terrain.editor",
+    "rootNamespace": "ST.Terrain",
+    "references": [
+        "com.spacetime.terrain.runtime",
+        "com.spacetime.terrain.shaders",
+        "com.spacetime.core.editor",
+        "Unity.TerrainTools.Editor"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [
+        {
+            "name": "com.unity.terrain-tools",
+            "expression": "",
+            "define": "HAS_UNITY_TERRAIN_TOOLS"
+        }
+    ],
+    "noEngineReferences": false
+}
