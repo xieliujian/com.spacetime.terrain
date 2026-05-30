@@ -48,29 +48,33 @@ namespace ST.Terrain
             MeshFilter   mf = go.AddComponent<MeshFilter>();
             mr.shadowCastingMode = ShadowCastingMode.Off;
 
+            Material splatMat = Load<Material>(data.splatMat);
+            Material baseMat  = Load<Material>(data.baseMat);
+            Material lodHighMat = splatMat != null ? splatMat : baseMat;
+
             switch (suffix)
             {
                 case "_LOD0":
                     mf.sharedMesh     = Load<Mesh>(data.meshLOD0Path);
-                    mr.sharedMaterial = Load<Material>(data.splatMat);
+                    mr.sharedMaterial = lodHighMat;
                     if (needCollider) AddCollider(go, mf.sharedMesh);
                     break;
                 case "_LOD1":
                     mf.sharedMesh     = Load<Mesh>(data.meshLOD1Path);
-                    mr.sharedMaterial = Load<Material>(data.baseMat);
+                    mr.sharedMaterial = baseMat;
                     break;
                 case "_LOD2":
                     mf.sharedMesh     = Load<Mesh>(data.meshLOD2Path);
-                    mr.sharedMaterial = Load<Material>(data.baseMat);
+                    mr.sharedMaterial = baseMat;
                     break;
                 case "_LODVT":
                     mf.sharedMesh = Load<Mesh>(data.meshLODVTPath);
-                    AssignMultiMaterial(mr, mf, Load<Material>(data.splatMat));
+                    AssignMultiMaterial(mr, mf, lodHighMat);
                     if (needCollider) AddCollider(go, mf.sharedMesh);
                     break;
                 case "_LODVT1":
                     mf.sharedMesh = Load<Mesh>(data.meshLODVT1Path);
-                    AssignMultiMaterial(mr, mf, Load<Material>(data.splatMat));
+                    AssignMultiMaterial(mr, mf, lodHighMat);
                     if (needCollider) AddCollider(go, mf.sharedMesh);
                     break;
             }

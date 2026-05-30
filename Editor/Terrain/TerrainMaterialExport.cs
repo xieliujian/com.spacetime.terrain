@@ -17,98 +17,105 @@ namespace ST.Terrain
                 TerrainExportPath.PREFAB_EXPORT_FOLDER_NAME);
             string texFolder = TerrainExportPath.GetTerrainOutputPath() + "/texture";
 
+            bool hasTerainLayers = data.terrain.terrainData.terrainLayers != null &&
+                                   data.terrain.terrainData.terrainLayers.Length > 0;
+
             #region Splatmap Material
-            Material splatMat = TerrainBridge.exportSplatmapMaterial(data.terrain);
-            Shader   splatShader = Shader.Find("SpaceTime/Scene/TerrainMesh/Splatmap");
-            if (splatMat != null)
+            if (hasTerainLayers)
             {
-                splatMat.shader = splatShader;
-                CopyWeatherParams(data.terrain.materialTemplate, splatMat);
-            }
-
-            splatMat.SetTexture("_BaseMap", LoadTexture(TerrainExportUtility.AbsPath2AssetsPath(data.baseTexPath)));
-            splatMat.SetTexture("_BumpMap", LoadTexture(TerrainExportUtility.AbsPath2AssetsPath(data.normalTexPath)));
-
-            data.enableTriplanar = false;
-#if HAS_UNITY_TERRAIN_TOOLS
-            var atd = data.terrain.GetComponent<AdditionalTerrainData>();
-            if (atd != null)
-            {
-                for (int i = 0; i < 8; i++)
+                Material splatMat = TerrainBridge.exportSplatmapMaterial(data.terrain);
+                Shader   splatShader = Shader.Find("SpaceTime/Scene/TerrainMesh/Splatmap");
+                if (splatMat != null)
                 {
-                    bool hasLayer = splatMat.HasTexture("_T2M_Layer_" + i + "_Diffuse") &&
-                                    splatMat.GetTexture("_T2M_Layer_" + i + "_Diffuse") != null;
-                    if (hasLayer)
+                    splatMat.shader = splatShader;
+                    CopyWeatherParams(data.terrain.materialTemplate, splatMat);
+                }
+
+                if (splatMat != null)
+                {
+                    splatMat.SetTexture("_BaseMap", LoadTexture(TerrainExportUtility.AbsPath2AssetsPath(data.baseTexPath)));
+                    splatMat.SetTexture("_BumpMap", LoadTexture(TerrainExportUtility.AbsPath2AssetsPath(data.normalTexPath)));
+                }
+
+                data.enableTriplanar = false;
+#if HAS_UNITY_TERRAIN_TOOLS
+                var atd = data.terrain.GetComponent<AdditionalTerrainData>();
+                if (atd != null && splatMat != null)
+                {
+                    for (int i = 0; i < 8; i++)
                     {
-                        if (atd.LayerTriplanar[i]) data.enableTriplanar = true;
-                        splatMat.SetFloat("_Layer" + i + "_Triplanar",          atd.LayerTriplanar[i] ? 1f : 0f);
-                        splatMat.SetFloat("_Layer" + i + "_TriplanarTileScale", atd.LayerTriplanarTileScale[i]);
-                        splatMat.SetFloat("_AtomColorRange" + i,                atd.AtomColorRanges[i]);
-                    }
-                    else
-                    {
-                        splatMat.SetFloat("_Layer" + i + "_Triplanar", 0f);
+                        bool hasLayer = splatMat.HasTexture("_T2M_Layer_" + i + "_Diffuse") &&
+                                        splatMat.GetTexture("_T2M_Layer_" + i + "_Diffuse") != null;
+                        if (hasLayer)
+                        {
+                            if (atd.LayerTriplanar[i]) data.enableTriplanar = true;
+                            splatMat.SetFloat("_Layer" + i + "_Triplanar",          atd.LayerTriplanar[i] ? 1f : 0f);
+                            splatMat.SetFloat("_Layer" + i + "_TriplanarTileScale", atd.LayerTriplanarTileScale[i]);
+                            splatMat.SetFloat("_AtomColorRange" + i,                atd.AtomColorRanges[i]);
+                        }
+                        else
+                        {
+                            splatMat.SetFloat("_Layer" + i + "_Triplanar", 0f);
+                        }
                     }
                 }
-            }
 #endif
 
-            for (int i = 0; i < 2; i++)
-            {
-                string splatPath = TerrainExportUtility.AbsPath2AssetsPath(
-                    string.Format("{0}/{1}-Splatmap-{2}.tga", texFolder, data.splatTexPath, i));
-                splatMat.SetTexture("_T2M_SplatMap_" + i, LoadTexture(splatPath));
+                if (splatMat != null)
+                {
+                    for (int i = 0; i < 2; i++)
+                    {
+                        string splatPath = TerrainExportUtility.AbsPath2AssetsPath(
+                            string.Format("{0}/{1}-Splatmap-{2}.tga", texFolder, data.splatTexPath, i));
+                        splatMat.SetTexture("_T2M_SplatMap_" + i, LoadTexture(splatPath));
+                    }
+
+                    if (data.terrain.materialTemplate != null)
+                    {
+                        if (data.terrain.materialTemplate.IsKeywordEnabled("_TERRAIN_BLEND_HEIGHT"))
+                            splatMat.EnableKeyword(new LocalKeyword(splatMat.shader, "_TERRAIN_BLEND_HEIGHT"));
+                        splatMat.SetFloat("_HeightTransition",
+                            data.terrain.materialTemplate.GetFloat("_HeightTransition"));
+                    }
+
+                    for (int i = 0; i < data.terrain.terrainData.terrainLayers.Length; i++)
+                    {
+                        TerrainLayer layer = data.terrain.terrainData.terrainLayers[i];
+                        float hasAlpha = (layer != null && TerrainExportUtility.TextureHasAlpha(layer.diffuseTexture)) ? 1f : 0f;
+                        splatMat.SetFloat(string.Format("_T2M_Layer_{0}_SmoothnessFromDiffuseAlpha", i), hasAlpha);
+                    }
+
+                    splatMat.SetFloat("_QueueOffset", 4);
+                    splatMat.renderQueue = 2199;
+                    splatMat.SetFloat("_T2M_SplatMapOffsetX", data.offsetX);
+                    splatMat.SetFloat("_T2M_SplatMapOffsetY", data.offsetY);
+
+                    NormaliseLayerCountKeywords(splatMat);
+
+                    for (int i = 0; i < 8; i++)
+                    {
+                        string prop = string.Format("_T2M_Layer_{0}_uvScaleOffset", i);
+                        Vector4 v = splatMat.GetVector(prop);
+                        splatMat.SetVector(prop, new Vector4(
+                            Mathf.FloorToInt(v.x), Mathf.FloorToInt(v.y),
+                            Mathf.CeilToInt(v.z),  Mathf.CeilToInt(v.w)));
+                    }
+
+                    string splatMatPath = string.Format("{0}{1}-Splatmap.mat", matFolder, data.terrain.name);
+                    AssetDatabase.CreateAsset(splatMat, splatMatPath);
+                    data.splatMat = splatMatPath;
+                }
             }
-
-            if (data.terrain.materialTemplate != null)
-            {
-                if (data.terrain.materialTemplate.IsKeywordEnabled("_TERRAIN_BLEND_HEIGHT"))
-                    splatMat.EnableKeyword(new LocalKeyword(splatMat.shader, "_TERRAIN_BLEND_HEIGHT"));
-                splatMat.SetFloat("_HeightTransition",
-                    data.terrain.materialTemplate.GetFloat("_HeightTransition"));
-            }
-
-            for (int i = 0; i < data.terrain.terrainData.terrainLayers.Length; i++)
-            {
-                TerrainLayer layer = data.terrain.terrainData.terrainLayers[i];
-                float hasAlpha = (layer != null && TerrainExportUtility.TextureHasAlpha(layer.diffuseTexture)) ? 1f : 0f;
-                splatMat.SetFloat(string.Format("_T2M_Layer_{0}_SmoothnessFromDiffuseAlpha", i), hasAlpha);
-            }
-
-            splatMat.SetFloat("_QueueOffset", 4);
-            splatMat.renderQueue = 2199;
-            splatMat.SetFloat("_T2M_SplatMapOffsetX", data.offsetX);
-            splatMat.SetFloat("_T2M_SplatMapOffsetY", data.offsetY);
-
-            // Layer count keyword normalisation (force to 4 or 8)
-            NormaliseLayerCountKeywords(splatMat);
-
-            // Tiling floor/ceil correction
-            for (int i = 0; i < 8; i++)
-            {
-                string prop = string.Format("_T2M_Layer_{0}_uvScaleOffset", i);
-                Vector4 v = splatMat.GetVector(prop);
-                splatMat.SetVector(prop, new Vector4(
-                    Mathf.FloorToInt(v.x), Mathf.FloorToInt(v.y),
-                    Mathf.CeilToInt(v.z),  Mathf.CeilToInt(v.w)));
-            }
-
-            string splatMatPath = string.Format("{0}{1}-Splatmap.mat", matFolder, data.terrain.name);
-            AssetDatabase.CreateAsset(splatMat, splatMatPath);
-            data.splatMat = splatMatPath;
             #endregion
 
-            BuildBaseMapMaterial(data, splatMat, matFolder);
+            BuildBaseMapMaterial(data, matFolder);
         }
 
-        static void BuildBaseMapMaterial(TerrainExportData data, Material splatMat, string matFolder)
+        static void BuildBaseMapMaterial(TerrainExportData data, string matFolder)
         {
             Material baseMat = new Material(Shader.Find("SpaceTime/Scene/SceneObjLit"));
             baseMat.shaderKeywords = new string[0];
             baseMat.SetFloat("_Smoothness", 0f);
-
-            if (splatMat != null)
-                CopyWeatherParams(splatMat, baseMat);
 
             baseMat.SetTexture("_BaseMap", LoadTexture(TerrainExportUtility.AbsPath2AssetsPath(data.baseTexPath)));
             baseMat.SetFloat("_UseNormal", 1f);
@@ -120,7 +127,6 @@ namespace ST.Terrain
             baseMat.SetFloat("_SpecularHighlights", 1f);
 
             string baseMatPath = string.Format("{0}{1}-Basemap.mat", matFolder, data.terrain.name);
-            baseMatPath = baseMatPath.Substring(baseMatPath.IndexOf("Assets"));
             AssetDatabase.CreateAsset(baseMat, baseMatPath);
             data.baseMat = baseMatPath;
         }
