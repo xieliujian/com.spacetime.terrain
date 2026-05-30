@@ -1,4 +1,4 @@
-锘縎hader "LingRen/Scene/TerrainMesh/Splatmap"
+Shader "SpaceTime/Scene/TerrainMesh/Splatmap"
 {
     Properties
     {
@@ -31,14 +31,14 @@
 //        _WetnessDropsTilling("DropsTilling", Range(0.0, 8)) = 0.25
         _WetnessDropsFade("DropsFade", Range(1.0, 40)) = 20
         _WetnessDropsProjRemap("DropsProjRemap", Vector) = (0.4,1,0,0)
-        _WetnessUseAtmoGlobals("鎺ュ彈鍏ㄥ眬鎺у埗", Float) = 1
+        _WetnessUseAtmoGlobals("接受全局控制", Float) = 1
 
-        _TintingIntensity("鏌撹壊寮哄害", Range(0.0, 1)) = 0.7
-        _TintingGray("鐏板害", Range(0.0, 1)) = 0.7
-        [HDR] _TintingColor("棰滆壊", Color) = (1,1,1,1)
-        _TintingLumIntensity("浜害Mask寮哄害", Range(0.0, 1)) = 0.7
-        _TintingLumRemap("        浜害Mask寮哄害", Vector) = (0.1,0.8,0,0)       
-        _TintingBlendRemap("        鏈�缁堟贩鍚圧emap", Vector) = (0.1,0.2,0,0)  
+        _TintingIntensity("染色强度", Range(0.0, 1)) = 0.7
+        _TintingGray("灰度", Range(0.0, 1)) = 0.7
+        [HDR] _TintingColor("颜色", Color) = (1,1,1,1)
+        _TintingLumIntensity("亮度Mask强度", Range(0.0, 1)) = 0.7
+        _TintingLumRemap("        亮度Mask强度", Vector) = (0.1,0.8,0,0)       
+        _TintingBlendRemap("        最终混合Remap", Vector) = (0.1,0.2,0,0)  
 
         [HideInInspector] _T2M_SplatMapOffsetX("MyOffsetX", float) = 0
         [HideInInspector] _T2M_SplatMapOffsetY("MyOffsetY", float) = 0
