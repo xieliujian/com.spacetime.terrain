@@ -62,6 +62,9 @@ namespace ST.Terrain
         static Texture2D SwizzleForUnityNormalMap(Texture2D src)
         {
             Color[] pixels = src.GetPixels();
+            // 打印中心像素确认原始值
+            int mid = pixels.Length / 2;
+            UnityEngine.Debug.Log($"[TerrainExport] NormalTex center pixel: R={pixels[mid].r:F3} G={pixels[mid].g:F3} B={pixels[mid].b:F3} A={pixels[mid].a:F3}");
             for (int i = 0; i < pixels.Length; i++)
             {
                 float x = pixels[i].r;
