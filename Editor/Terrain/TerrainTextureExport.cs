@@ -39,7 +39,18 @@ namespace ST.Terrain
             string normalPath = string.Format("{0}/{1}-Basemap-Normal.png",    textureFolder, data.terrain.name);
 
             if (baseTex   != null) TerrainExportUtility.SaveTextureToDisk(baseTex,   basePath,   TextureFileType.PNG);
-            if (normalTex != null) TerrainExportUtility.SaveTextureToDisk(normalTex, normalPath, TextureFileType.PNG);
+            if (normalTex != null)
+            {
+                TerrainExportUtility.SaveTextureToDisk(normalTex, normalPath, TextureFileType.PNG);
+                string assetPath = TerrainExportUtility.AbsPath2AssetsPath(normalPath);
+                AssetDatabase.ImportAsset(assetPath);
+                var importer = AssetImporter.GetAtPath(assetPath) as TextureImporter;
+                if (importer != null)
+                {
+                    importer.textureType = TextureImporterType.NormalMap;
+                    importer.SaveAndReimport();
+                }
+            }
 
             data.baseTexPath   = basePath;
             data.normalTexPath = normalPath;
