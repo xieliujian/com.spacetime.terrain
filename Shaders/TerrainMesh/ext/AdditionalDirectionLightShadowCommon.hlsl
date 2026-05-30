@@ -2,6 +2,7 @@
 #define ADDITIONALDIRECTIONALLIGHT_COMMON_INCLUDED
 
 half _CharShadowOverlayStrength;
+half _MainLightShadowCascadeEnable;
 
 half LRAdditionalLightRealtimeShadow(int lightIndex, float3 positionWS, half3 lightDirection)
 {
@@ -21,7 +22,7 @@ half LRAdditionalLightRealtimeShadow(int lightIndex, float3 positionWS, half3 li
     if(isDirectionLight)
     {
 #if LIGHT_SHADOW_NEW || _MAIN_LIGHT_SHADOWS_CASCADE
-        shadowSliceIndex += lerp(0.0, ComputeCascadeIndex(positionWS), _MainLightShadowCascadeEnable);
+        shadowSliceIndex += (int)lerp(0.0h, (half)ComputeCascadeIndex(positionWS), _MainLightShadowCascadeEnable);
 #else
         shadowSliceIndex += 0;
 #endif
