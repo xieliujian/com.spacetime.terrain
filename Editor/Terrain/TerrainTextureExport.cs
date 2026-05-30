@@ -33,7 +33,7 @@ namespace ST.Terrain
             Texture2D[] texs = TerrainBridge.exportBaseTexture(data.terrain, size);
             Texture2D baseTex   = texs != null ? texs[0] : null;
             Texture2D normalTex = texs != null ? texs[1] : null;
-            UnityEngine.Debug.Log($"[TerrainExport] baseTex={(baseTex==null?"null":baseTex.width+"x"+baseTex.height)} normalTex={(normalTex==null?"null":normalTex.width+"x"+normalTex.height)}");
+            UnityEngine.Debug.Log($"[TerrainExport] baseTex={(baseTex==null?"null":baseTex.width+"x"+baseTex.height)} normalTex={(normalTex==null?"null":normalTex.width+"x"+normalTex.height+" fmt="+normalTex.format)}");
 
             string basePath   = string.Format("{0}/{1}-Basemap-Diffuse.png",   textureFolder, data.terrain.name);
             string normalPath = string.Format("{0}/{1}-Basemap-Normal.png",    textureFolder, data.terrain.name);
