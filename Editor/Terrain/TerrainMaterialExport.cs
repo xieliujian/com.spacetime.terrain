@@ -100,7 +100,7 @@ namespace ST.Terrain
                     splatMat.SetFloat("_T2M_SplatMapOffsetX", data.offsetX);
                     splatMat.SetFloat("_T2M_SplatMapOffsetY", data.offsetY);
 
-                    NormaliseLayerCountKeywords(splatMat);
+                    SetLayerCountKeyword(splatMat, data.terrain.terrainData.terrainLayers.Length);
 
                     string splatMatPath = string.Format("{0}{1}-Splatmap.mat", matFolder, data.terrain.name);
                     AssetDatabase.CreateAsset(splatMat, splatMatPath);
@@ -150,6 +150,16 @@ namespace ST.Terrain
             CopyFloat("_TintingIntensity");  CopyFloat("_TintingGray");
             CopyVec("_TintingColor");        CopyFloat("_TintingLumIntensity");
             CopyVec("_TintingLumRemap");     CopyVec("_TintingBlendRemap");
+        }
+
+        static void SetLayerCountKeyword(Material mat, int layerCount)
+        {
+            mat.DisableKeyword("_T2M_LAYER_COUNT_4");
+            mat.DisableKeyword("_T2M_LAYER_COUNT_8");
+
+            int count = layerCount <= 4 ? 4 : 8;
+            mat.SetFloat("_T2M_Layer_Count", count);
+            mat.EnableKeyword(count == 4 ? "_T2M_LAYER_COUNT_4" : "_T2M_LAYER_COUNT_8");
         }
 
         static void NormaliseLayerCountKeywords(Material mat)
