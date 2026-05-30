@@ -81,6 +81,14 @@ namespace ST.Terrain
             {
                 string path = string.Format("{0}/{1}-Splatmap-{2}.tga", textureFolder, terrain.name, i);
                 TerrainExportUtility.SaveTextureToDisk(splatTextures[i], path, TextureFileType.TGA);
+                string assetPath = TerrainExportUtility.AbsPath2AssetsPath(path);
+                AssetDatabase.ImportAsset(assetPath);
+                var importer = AssetImporter.GetAtPath(assetPath) as TextureImporter;
+                if (importer != null)
+                {
+                    importer.sRGBTexture = false;
+                    importer.SaveAndReimport();
+                }
             }
         }
     }
