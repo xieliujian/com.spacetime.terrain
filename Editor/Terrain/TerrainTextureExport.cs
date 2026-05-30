@@ -11,6 +11,7 @@ namespace ST.Terrain
         public static void GenerateBaseTexture(TerrainExportData data)
         {
             string textureFolder = TerrainExportPath.GetTerrainOutputPath() + "/texture";
+            UnityEngine.Debug.Log($"[TerrainExport] GenerateBaseTexture terrain={data.terrain.name} folder={textureFolder}");
 
             int size = 512;
 #if HAS_UNITY_TERRAIN_TOOLS
@@ -46,7 +47,9 @@ namespace ST.Terrain
         public static void GenerateSplatTexture(UnityEngine.Terrain terrain)
         {
             string textureFolder = TerrainExportPath.GetTerrainOutputPath() + "/texture";
+            UnityEngine.Debug.Log($"[TerrainExport] GenerateSplatTexture terrain={terrain.name} folder={textureFolder}");
             Texture2D[] splatTextures = TerrainBridge.exportSplatmapTextures(terrain, true);
+            UnityEngine.Debug.Log($"[TerrainExport] splatTextures={(splatTextures == null ? "null" : splatTextures.Length.ToString())}");
             if (splatTextures == null) return;
 
             for (int i = 0; i < splatTextures.Length; i++)
