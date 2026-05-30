@@ -12,8 +12,12 @@
     ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
-    "overrideReferences": false,
-    "precompiledReferences": [],
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "AmazingAssets.TerrainToMesh.dll",
+        "AmazingAssets.TerrainToMeshEditor.dll",
+        "AmazingAssets.dll"
+    ],
     "autoReferenced": true,
     "defineConstraints": [],
     "versionDefines": [
