@@ -47,7 +47,8 @@ namespace ST.Terrain
                 var importer = AssetImporter.GetAtPath(assetPath) as TextureImporter;
                 if (importer != null)
                 {
-                    importer.textureType = TextureImporterType.NormalMap;
+                    importer.textureType    = TextureImporterType.Default;
+                    importer.sRGBTexture    = false;
                     importer.SaveAndReimport();
                 }
             }
