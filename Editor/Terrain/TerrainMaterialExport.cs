@@ -85,6 +85,10 @@ namespace ST.Terrain
 
                         splatMat.SetTexture(string.Format("_T2M_Layer_{0}_Diffuse",   i), layer.diffuseTexture);
                         splatMat.SetTexture(string.Format("_T2M_Layer_{0}_NormalMap", i), layer.normalMapTexture);
+                        splatMat.SetFloat(string.Format("_T2M_Layer_{0}_NormalScale", i), layer.normalScale);
+
+                        if (layer.normalMapTexture != null)
+                            splatMat.EnableKeyword(string.Format("_T2M_LAYER_{0}_NORMAL", i));
 
                         float tileX = layer.tileSize.x > 0 ? layer.tileSize.x : 1f;
                         float tileY = layer.tileSize.y > 0 ? layer.tileSize.y : 1f;
