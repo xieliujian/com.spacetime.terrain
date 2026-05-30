@@ -49,7 +49,6 @@ namespace ST.Terrain
 
         public static void GenerateMesh(TerrainExportData data)
         {
-            string templateFolder = "Assets/scene/common/ttm/";
             string runFolder      = TerrainExportPath.GetTerrainOutputPath();
             string assetFolder    = TerrainExportUtility.AbsPath2AssetsPath(runFolder + "/asset/");
 
@@ -67,9 +66,9 @@ namespace ST.Terrain
             AssetDatabase.CreateAsset(lod0, lod0Path);
             data.meshLOD0Path = lod0Path;
 
-            // LOD1/2 ── 低精度模板对齐高度
-            data.meshLOD1Path = ProcessLODMesh(data, lod0, templateFolder + "TTM-Lod1.prefab", "Mesh1");
-            data.meshLOD2Path = ProcessLODMesh(data, lod0, templateFolder + "TTM-Lod2.prefab", "Mesh2");
+            // LOD1/2 ── 降采样平面网格对齐高度
+            data.meshLOD1Path = ProcessLODMesh(data, lod0, 33, "Mesh1");
+            data.meshLOD2Path = ProcessLODMesh(data, lod0, 17, "Mesh2");
 
             // LODVT / LODVT1 ── SubMesh 切割（VT 渲染）
             data.meshLODVTPath  = ProcessLODVTMesh(data, lod0, vx, vy, sm,     "MeshVT");
@@ -77,29 +76,25 @@ namespace ST.Terrain
         }
 
         static string ProcessLODMesh(TerrainExportData data, Mesh lod0Mesh,
-            string templatePath, string meshName)
+            int vertexCount, string meshName)
         {
             string runFolder   = TerrainExportPath.GetTerrainOutputPath();
             string assetFolder = TerrainExportUtility.AbsPath2AssetsPath(runFolder + "/asset/");
             string outPath     = string.Format("{0}{1}-{2}.asset", assetFolder, data.terrain.name, meshName);
 
             Mesh mesh = AssetDatabase.LoadAssetAtPath<Mesh>(outPath);
-            if (mesh != null)
-            {
-                MyMeshHelper.S.MergeVerticesHeight(mesh, lod0Mesh,
-                    mesh.bounds.size.x, mesh.bounds.size.z, true);
-                mesh.RecalculateTangents();
+            if (mesh == null)
+                mesh = MyMeshHelper.S.CreateMesh(vertexCount, vertexCount);
+
+            MyMeshHelper.S.MergeVerticesHeight(mesh, lod0Mesh,
+                lod0Mesh.bounds.size.x, lod0Mesh.bounds.size.z, true);
+            mesh.RecalculateTangents();
+
+            if (AssetDatabase.LoadAssetAtPath<Mesh>(outPath) != null)
                 EditorUtility.SetDirty(mesh);
-            }
             else
-            {
-                GameObject tmpl = AssetDatabase.LoadAssetAtPath<GameObject>(templatePath);
-                mesh = Object.Instantiate(tmpl.GetComponent<MeshFilter>().sharedMesh);
-                MyMeshHelper.S.MergeVerticesHeight(mesh, lod0Mesh,
-                    mesh.bounds.size.x, mesh.bounds.size.z, true);
-                mesh.RecalculateTangents();
                 AssetDatabase.CreateAsset(mesh, outPath);
-            }
+
             return outPath;
         }
 
