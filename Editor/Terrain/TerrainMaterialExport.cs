@@ -81,7 +81,17 @@ namespace ST.Terrain
                     for (int i = 0; i < data.terrain.terrainData.terrainLayers.Length; i++)
                     {
                         TerrainLayer layer = data.terrain.terrainData.terrainLayers[i];
-                        float hasAlpha = (layer != null && TerrainExportUtility.TextureHasAlpha(layer.diffuseTexture)) ? 1f : 0f;
+                        if (layer == null) continue;
+
+                        splatMat.SetTexture(string.Format("_T2M_Layer_{0}_Diffuse",   i), layer.diffuseTexture);
+                        splatMat.SetTexture(string.Format("_T2M_Layer_{0}_NormalMap", i), layer.normalMapTexture);
+
+                        float tileX = layer.tileSize.x > 0 ? layer.tileSize.x : 1f;
+                        float tileY = layer.tileSize.y > 0 ? layer.tileSize.y : 1f;
+                        splatMat.SetVector(string.Format("_T2M_Layer_{0}_uvScaleOffset", i),
+                            new Vector4(tileX, tileY, layer.tileOffset.x, layer.tileOffset.y));
+
+                        float hasAlpha = TerrainExportUtility.TextureHasAlpha(layer.diffuseTexture) ? 1f : 0f;
                         splatMat.SetFloat(string.Format("_T2M_Layer_{0}_SmoothnessFromDiffuseAlpha", i), hasAlpha);
                     }
 
@@ -91,15 +101,6 @@ namespace ST.Terrain
                     splatMat.SetFloat("_T2M_SplatMapOffsetY", data.offsetY);
 
                     NormaliseLayerCountKeywords(splatMat);
-
-                    for (int i = 0; i < 8; i++)
-                    {
-                        string prop = string.Format("_T2M_Layer_{0}_uvScaleOffset", i);
-                        Vector4 v = splatMat.GetVector(prop);
-                        splatMat.SetVector(prop, new Vector4(
-                            Mathf.FloorToInt(v.x), Mathf.FloorToInt(v.y),
-                            Mathf.CeilToInt(v.z),  Mathf.CeilToInt(v.w)));
-                    }
 
                     string splatMatPath = string.Format("{0}{1}-Splatmap.mat", matFolder, data.terrain.name);
                     AssetDatabase.CreateAsset(splatMat, splatMatPath);
