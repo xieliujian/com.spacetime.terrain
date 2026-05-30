@@ -7,7 +7,7 @@ Shader "SpaceTime/Scene/TerrainMesh/Splatmap"
         [HideInInspector] [TerrainToMeshLayerCounter] _T2M_Layer_Count ("Layer Count", float) = 0		
 
         [Space]
-        [HideInInspector] [NoScaleOffset] _T2M_SplatMap_0 ("Splat Map #10 (RGBA)", 2D) = "black" {}
+        /*[HideInInspector]*/ [NoScaleOffset] _T2M_SplatMap_0 ("Splat Map #0 (RGBA)", 2D) = "black" {}
         [HideInInspector] _BakeScaleOffset("_BakeScaleOffset", Vector) = (1, 1, 0, 0)
 
         _SnowIntensity("Snow Intensity", Range(0.0, 1)) = 0.7
@@ -92,7 +92,7 @@ Shader "SpaceTime/Scene/TerrainMesh/Splatmap"
         [HideInInspector] _T2M_Layer_3_MaskMapRemapMax("Maskmap Remap Max", Vector) = (1, 1, 1, 1)
 
 
-        [HideInInspector] [NoScaleOffset] _T2M_SplatMap_1 ("Splat Map #1 (RGBA)", 2D) = "black" {}
+        /*[HideInInspector]*/ [NoScaleOffset] _T2M_SplatMap_1 ("Splat Map #1 (RGBA)", 2D) = "black" {}
 
         [HideInInspector] _T2M_Layer_4_ColorTint ("Color Tint", Color) = (1, 1, 1, 1)
         /*[HideInInspector]*/ [NoScaleOffset] _T2M_Layer_4_Diffuse ("Paint Map 4 (A)", 2D) = "white" {}
@@ -142,8 +142,8 @@ Shader "SpaceTime/Scene/TerrainMesh/Splatmap"
         [HideInInspector] _T2M_Layer_7_MaskMapRemapMin("Maskmap Remap Min", Vector) = (0, 0, 0, 0)
         [HideInInspector] _T2M_Layer_7_MaskMapRemapMax("Maskmap Remap Max", Vector) = (1, 1, 1, 1)
 
-        [HideInInspector] [NoScaleOffset] _T2M_SplatMap_2 ("Splat Map #2 (RGBA)", 2D) = "black" {}
-        [HideInInspector][NoScaleOffset] _T2M_SplatMap_3("Splat Map #3 (RGBA)", 2D) = "black" {}
+        /*[HideInInspector]*/ [NoScaleOffset] _T2M_SplatMap_2 ("Splat Map #2 (RGBA)", 2D) = "black" {}
+        /*[HideInInspector]*/[NoScaleOffset] _T2M_SplatMap_3("Splat Map #3 (RGBA)", 2D) = "black" {}
 
         [HideInInspector] _T2M_Layer_8_ColorTint ("Color Tint", Color) = (1, 1, 1, 1)
         /*[HideInInspector]*/ [NoScaleOffset] _T2M_Layer_8_Diffuse ("Paint Map 8 (A)", 2D) = "white" {}
