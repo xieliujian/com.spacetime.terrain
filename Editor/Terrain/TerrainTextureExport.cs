@@ -47,6 +47,7 @@ namespace ST.Terrain
         {
             string textureFolder = TerrainExportPath.GetTerrainOutputPath() + "/texture";
             Texture2D[] splatTextures = TerrainBridge.exportSplatmapTextures(terrain, true);
+            if (splatTextures == null) return;
 
             for (int i = 0; i < splatTextures.Length; i++)
             {
