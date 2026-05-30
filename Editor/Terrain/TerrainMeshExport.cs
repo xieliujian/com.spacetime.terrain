@@ -54,9 +54,8 @@ namespace ST.Terrain
 
             int vx = s_DefaultVertexCountX;
             int vy = s_DefaultVertexCountY;
-            int sm = s_DefaultSubMeshVertexCount;
 
-            // LOD0 ── TTM 主网格
+            // LOD0 ── TTM 主网格 65x65
             Mesh lod0 = TerrainBridge.exportMesh(data.terrain, vx, vy);
             lod0.RecalculateBounds();
             lod0.RecalculateNormals();
@@ -66,65 +65,23 @@ namespace ST.Terrain
             AssetDatabase.CreateAsset(lod0, lod0Path);
             data.meshLOD0Path = lod0Path;
 
-            // LOD1/2 ── 降采样平面网格对齐高度
-            data.meshLOD1Path = ProcessLODMesh(data, lod0, 33, "Mesh1");
-            data.meshLOD2Path = ProcessLODMesh(data, lod0, 17, "Mesh2");
-
-            // LODVT / LODVT1 ── SubMesh 切割（VT 渲染）
-            data.meshLODVTPath  = ProcessLODVTMesh(data, lod0, vx, vy, sm,     "MeshVT");
-            data.meshLODVT1Path = ProcessLODVTMesh(data, lod0, vx, vy, sm / 2, "MeshVT1");
+            // LOD1 ── 33x33
+            data.meshLOD1Path = ProcessLODMesh(data, assetFolder, 33, 33, "Mesh1");
+            // LOD2 ── 17x17
+            data.meshLOD2Path = ProcessLODMesh(data, assetFolder, 17, 17, "Mesh2");
         }
 
-        static string ProcessLODMesh(TerrainExportData data, Mesh lod0Mesh,
-            int vertexCount, string meshName)
+        static string ProcessLODMesh(TerrainExportData data, string assetFolder,
+            int vx, int vy, string meshName)
         {
-            string runFolder   = TerrainExportPath.GetTerrainOutputPath();
-            string assetFolder = TerrainExportUtility.AbsPath2AssetsPath(runFolder + "/asset/");
-            string outPath     = string.Format("{0}{1}-{2}.asset", assetFolder, data.terrain.name, meshName);
+            string outPath = string.Format("{0}{1}-{2}.asset", assetFolder, data.terrain.name, meshName);
 
-            Mesh mesh = AssetDatabase.LoadAssetAtPath<Mesh>(outPath);
-            if (mesh == null)
-                mesh = MyMeshHelper.S.CreateMesh(vertexCount, vertexCount);
-
-            MyMeshHelper.S.MergeVerticesHeight(mesh, lod0Mesh,
-                lod0Mesh.bounds.size.x, lod0Mesh.bounds.size.z, true);
+            Mesh mesh = TerrainBridge.exportMesh(data.terrain, vx, vy);
+            mesh.RecalculateBounds();
+            mesh.RecalculateNormals();
             mesh.RecalculateTangents();
+            AssetDatabase.CreateAsset(mesh, outPath);
 
-            if (AssetDatabase.LoadAssetAtPath<Mesh>(outPath) != null)
-                EditorUtility.SetDirty(mesh);
-            else
-                AssetDatabase.CreateAsset(mesh, outPath);
-
-            return outPath;
-        }
-
-        static string ProcessLODVTMesh(TerrainExportData data, Mesh lod0Mesh,
-            int vx, int vy, int tileCount, string meshName)
-        {
-            string runFolder   = TerrainExportPath.GetTerrainOutputPath();
-            string assetFolder = TerrainExportUtility.AbsPath2AssetsPath(runFolder + "/asset/");
-            string outPath     = string.Format("{0}{1}-{2}.asset", assetFolder, data.terrain.name, meshName);
-
-            Mesh mesh = AssetDatabase.LoadAssetAtPath<Mesh>(outPath);
-            if (mesh != null)
-            {
-                SplatMeshHelper.SplitMeshToSubMesh(lod0Mesh, vx, vy, tileCount, mesh);
-                mesh.RecalculateBounds();
-                mesh.RecalculateNormals();
-                mesh.RecalculateTangents();
-                RecalculateNormals(mesh, 120f);
-                EditorUtility.SetDirty(mesh);
-            }
-            else
-            {
-                mesh = SplatMeshHelper.SplitMeshToSubMesh(lod0Mesh, vx, vy, tileCount);
-                mesh.RecalculateBounds();
-                mesh.RecalculateNormals();
-                mesh.RecalculateTangents();
-                RecalculateNormals(mesh, 120f);
-                EditorUtility.SetDirty(mesh);
-                AssetDatabase.CreateAsset(mesh, outPath);
-            }
             return outPath;
         }
 

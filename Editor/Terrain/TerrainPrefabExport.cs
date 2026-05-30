@@ -18,8 +18,6 @@ namespace ST.Terrain
             CreateLodObject(data, "_LOD0",  group, prefabFolder, needCollider);
             CreateLodObject(data, "_LOD1",  group, prefabFolder, needCollider);
             CreateLodObject(data, "_LOD2",  group, prefabFolder, needCollider);
-            CreateLodObject(data, "_LODVT", group, prefabFolder, needCollider);
-            CreateLodObject(data, "_LODVT1",group, prefabFolder, needCollider);
 
             PrefabUtility.SaveAsPrefabAsset(group, prefabFolder + group.name + ".prefab");
             Object.DestroyImmediate(group);
@@ -67,16 +65,6 @@ namespace ST.Terrain
                     mf.sharedMesh     = Load<Mesh>(data.meshLOD2Path);
                     mr.sharedMaterial = baseMat;
                     break;
-                case "_LODVT":
-                    mf.sharedMesh = Load<Mesh>(data.meshLODVTPath);
-                    AssignMultiMaterial(mr, mf, lodHighMat);
-                    if (needCollider) AddCollider(go, mf.sharedMesh);
-                    break;
-                case "_LODVT1":
-                    mf.sharedMesh = Load<Mesh>(data.meshLODVT1Path);
-                    AssignMultiMaterial(mr, mf, lodHighMat);
-                    if (needCollider) AddCollider(go, mf.sharedMesh);
-                    break;
             }
 
             string lodPrefabPath = prefabFolder + name + ".prefab";
@@ -86,15 +74,6 @@ namespace ST.Terrain
             GameObject lodAsset  = Load<GameObject>(lodPrefabPath);
             GameObject lodInst   = PrefabUtility.InstantiatePrefab(lodAsset) as GameObject;
             lodInst.transform.SetParent(group.transform);
-        }
-
-        static void AssignMultiMaterial(MeshRenderer mr, MeshFilter mf, Material mat)
-        {
-            mr.sharedMaterial = mat;
-            if (mf.sharedMesh == null) return;
-            var mats = new Material[mf.sharedMesh.subMeshCount];
-            for (int i = 0; i < mats.Length; i++) mats[i] = mat;
-            mr.sharedMaterials = mats;
         }
 
         static void AddCollider(GameObject go, Mesh mesh)
