@@ -31,22 +31,22 @@ Shader "SpaceTime/Scene/TerrainMesh/Splatmap"
 //        _WetnessDropsTilling("DropsTilling", Range(0.0, 8)) = 0.25
         _WetnessDropsFade("DropsFade", Range(1.0, 40)) = 20
         _WetnessDropsProjRemap("DropsProjRemap", Vector) = (0.4,1,0,0)
-        _WetnessUseAtmoGlobals("½ÓÊÜÈ«¾Ö¿ØÖÆ", Float) = 1
+        _WetnessUseAtmoGlobals("ï¿½ï¿½ï¿½ï¿½È«ï¿½Ö¿ï¿½ï¿½ï¿½", Float) = 1
 
-        _TintingIntensity("È¾É«Ç¿¶È", Range(0.0, 1)) = 0.7
-        _TintingGray("»Ò¶È", Range(0.0, 1)) = 0.7
-        [HDR] _TintingColor("ÑÕÉ«", Color) = (1,1,1,1)
-        _TintingLumIntensity("ÁÁ¶ÈMaskÇ¿¶È", Range(0.0, 1)) = 0.7
-        _TintingLumRemap("        ÁÁ¶ÈMaskÇ¿¶È", Vector) = (0.1,0.8,0,0)       
-        _TintingBlendRemap("        ×îÖÕ»ìºÏRemap", Vector) = (0.1,0.2,0,0)  
+        _TintingIntensity("È¾É«Ç¿ï¿½ï¿½", Range(0.0, 1)) = 0.7
+        _TintingGray("ï¿½Ò¶ï¿½", Range(0.0, 1)) = 0.7
+        [HDR] _TintingColor("ï¿½ï¿½É«", Color) = (1,1,1,1)
+        _TintingLumIntensity("ï¿½ï¿½ï¿½ï¿½MaskÇ¿ï¿½ï¿½", Range(0.0, 1)) = 0.7
+        _TintingLumRemap("        ï¿½ï¿½ï¿½ï¿½MaskÇ¿ï¿½ï¿½", Vector) = (0.1,0.8,0,0)       
+        _TintingBlendRemap("        ï¿½ï¿½ï¿½Õ»ï¿½ï¿½Remap", Vector) = (0.1,0.2,0,0)  
 
         [HideInInspector] _T2M_SplatMapOffsetX("MyOffsetX", float) = 0
         [HideInInspector] _T2M_SplatMapOffsetY("MyOffsetY", float) = 0
         [HideInInspector] _Enable_BigTexture_Feature("Enable Big Texture", Float) = 0.0
         [HideInInspector] _T2M_Layer_0_ColorTint ("Color Tint", Color) = (1, 1, 1, 1)
-        [HideInInspector] [NoScaleOffset] _T2M_Layer_0_Diffuse ("Paint Map 1 (R)", 2D) = "white" {}
+        /*[HideInInspector]*/ [NoScaleOffset] _T2M_Layer_0_Diffuse ("Paint Map 1 (R)", 2D) = "white" {}
         [HideInInspector] _T2M_Layer_0_NormalScale("Strength", float) = 1
-        [HideInInspector] [NoScaleOffset] _T2M_Layer_0_NormalMap("Bump", 2D) = "bump" {}
+        /*[HideInInspector]*/ [NoScaleOffset] _T2M_Layer_0_NormalMap("Bump", 2D) = "bump" {}
         [HideInInspector] [NoScaleOffset] _T2M_Layer_0_Mask ("Mask", 2D) = "white" {}
         [HideInInspector] _T2M_Layer_0_uvScaleOffset("UV Scale", Vector) = (1, 1, 0, 0)
         [HideInInspector] _T2M_Layer_0_MapsUsage("Maps Usage", Vector) = (0, 0, 0, 0)
@@ -56,9 +56,9 @@ Shader "SpaceTime/Scene/TerrainMesh/Splatmap"
         [HideInInspector] _T2M_Layer_0_MaskMapRemapMax("Maskmap Remap Max", Vector) = (1, 1, 1, 1)
 
         [HideInInspector] _T2M_Layer_1_ColorTint ("Color Tint", Color) = (1, 1, 1, 1)
-        [HideInInspector] [NoScaleOffset] _T2M_Layer_1_Diffuse ("Paint Map 1 (R)", 2D) = "white" {}
+        /*[HideInInspector]*/ [NoScaleOffset] _T2M_Layer_1_Diffuse ("Paint Map 1 (R)", 2D) = "white" {}
         [HideInInspector] _T2M_Layer_1_NormalScale("Strength", float) = 1
-        [HideInInspector] [NoScaleOffset] _T2M_Layer_1_NormalMap("Bump", 2D) = "bump" {}
+        /*[HideInInspector]*/ [NoScaleOffset] _T2M_Layer_1_NormalMap("Bump", 2D) = "bump" {}
         [HideInInspector] [NoScaleOffset] _T2M_Layer_1_Mask ("Mask", 2D) = "white" {}
         [HideInInspector] _T2M_Layer_1_uvScaleOffset("UV Scale", Vector) = (1, 1, 0, 0)
         [HideInInspector] _T2M_Layer_1_MapsUsage("Maps Usage", Vector) = (0, 0, 0, 0)
@@ -68,9 +68,9 @@ Shader "SpaceTime/Scene/TerrainMesh/Splatmap"
         [HideInInspector] _T2M_Layer_1_MaskMapRemapMax("Maskmap Remap Max", Vector) = (1, 1, 1, 1)
 
         [HideInInspector] _T2M_Layer_2_ColorTint ("Color Tint", Color) = (1, 1, 1, 1)
-        [HideInInspector] [NoScaleOffset] _T2M_Layer_2_Diffuse ("Paint Map 2 (G)", 2D) = "white" {}
+        /*[HideInInspector]*/ [NoScaleOffset] _T2M_Layer_2_Diffuse ("Paint Map 2 (G)", 2D) = "white" {}
         [HideInInspector] _T2M_Layer_2_NormalScale("Strength", float) = 1
-        [HideInInspector] [NoScaleOffset] _T2M_Layer_2_NormalMap("Bump", 2D) = "bump" {}
+        /*[HideInInspector]*/ [NoScaleOffset] _T2M_Layer_2_NormalMap("Bump", 2D) = "bump" {}
         [HideInInspector] [NoScaleOffset] _T2M_Layer_2_Mask ("Mask", 2D) = "white" {}
         [HideInInspector] _T2M_Layer_2_uvScaleOffset("UV Scale", Vector) = (1, 1, 0, 0)
         [HideInInspector] _T2M_Layer_2_MapsUsage("Maps Usage", Vector) = (0, 0, 0, 0)
@@ -80,9 +80,9 @@ Shader "SpaceTime/Scene/TerrainMesh/Splatmap"
         [HideInInspector] _T2M_Layer_2_MaskMapRemapMax("Maskmap Remap Max", Vector) = (1, 1, 1, 1)
 
         [HideInInspector] _T2M_Layer_3_ColorTint ("Color Tint", Color) = (1, 1, 1, 1)
-        [HideInInspector] [NoScaleOffset] _T2M_Layer_3_Diffuse ("Paint Map 3 (B)", 2D) = "white" {}
+        /*[HideInInspector]*/ [NoScaleOffset] _T2M_Layer_3_Diffuse ("Paint Map 3 (B)", 2D) = "white" {}
         [HideInInspector] _T2M_Layer_3_NormalScale("Strength", float) = 1
-        [HideInInspector] [NoScaleOffset] _T2M_Layer_3_NormalMap("Bump", 2D) = "bump" {}
+        /*[HideInInspector]*/ [NoScaleOffset] _T2M_Layer_3_NormalMap("Bump", 2D) = "bump" {}
         [HideInInspector] [NoScaleOffset] _T2M_Layer_3_Mask ("Mask", 2D) = "white" {}
         [HideInInspector] _T2M_Layer_3_uvScaleOffset("UV Scale", Vector) = (1, 1, 0, 0)
         [HideInInspector] _T2M_Layer_3_MapsUsage("Maps Usage", Vector) = (0, 0, 0, 0)
@@ -95,9 +95,9 @@ Shader "SpaceTime/Scene/TerrainMesh/Splatmap"
         [HideInInspector] [NoScaleOffset] _T2M_SplatMap_1 ("Splat Map #1 (RGBA)", 2D) = "black" {}
 
         [HideInInspector] _T2M_Layer_4_ColorTint ("Color Tint", Color) = (1, 1, 1, 1)
-        [HideInInspector] [NoScaleOffset] _T2M_Layer_4_Diffuse ("Paint Map 4 (A)", 2D) = "white" {}
+        /*[HideInInspector]*/ [NoScaleOffset] _T2M_Layer_4_Diffuse ("Paint Map 4 (A)", 2D) = "white" {}
         [HideInInspector] _T2M_Layer_4_NormalScale("Strength", float) = 1
-        [HideInInspector] [NoScaleOffset] _T2M_Layer_4_NormalMap("Bump", 2D) = "bump" {}
+        /*[HideInInspector]*/ [NoScaleOffset] _T2M_Layer_4_NormalMap("Bump", 2D) = "bump" {}
         [HideInInspector] [NoScaleOffset] _T2M_Layer_4_Mask ("Mask", 2D) = "white" {}
         [HideInInspector] _T2M_Layer_4_uvScaleOffset("UV Scale", Vector) = (1, 1, 0, 0)
         [HideInInspector] _T2M_Layer_4_MapsUsage("Maps Usage", Vector) = (0, 0, 0, 0)
@@ -107,9 +107,9 @@ Shader "SpaceTime/Scene/TerrainMesh/Splatmap"
         [HideInInspector] _T2M_Layer_4_MaskMapRemapMax("Maskmap Remap Max", Vector) = (1, 1, 1, 1)
 
         [HideInInspector] _T2M_Layer_5_ColorTint ("Color Tint", Color) = (1, 1, 1, 1)
-        [HideInInspector] [NoScaleOffset] _T2M_Layer_5_Diffuse ("Paint Map 5 (R)", 2D) = "white" {}
+        /*[HideInInspector]*/ [NoScaleOffset] _T2M_Layer_5_Diffuse ("Paint Map 5 (R)", 2D) = "white" {}
         [HideInInspector] _T2M_Layer_5_NormalScale("Strength", float) = 1
-        [HideInInspector] [NoScaleOffset] _T2M_Layer_5_NormalMap("Bump", 2D) = "bump" {}
+        /*[HideInInspector]*/ [NoScaleOffset] _T2M_Layer_5_NormalMap("Bump", 2D) = "bump" {}
         [HideInInspector] [NoScaleOffset] _T2M_Layer_5_Mask ("Mask", 2D) = "white" {}
         [HideInInspector] _T2M_Layer_5_uvScaleOffset("UV Scale", Vector) = (1, 1, 0, 0)
         [HideInInspector] _T2M_Layer_5_MapsUsage("Maps Usage", Vector) = (0, 0, 0, 0)
@@ -119,9 +119,9 @@ Shader "SpaceTime/Scene/TerrainMesh/Splatmap"
         [HideInInspector] _T2M_Layer_5_MaskMapRemapMax("Maskmap Remap Max", Vector) = (1, 1, 1, 1)
 
         [HideInInspector] _T2M_Layer_6_ColorTint ("Color Tint", Color) = (1, 1, 1, 1)
-        [HideInInspector] [NoScaleOffset] _T2M_Layer_6_Diffuse ("Paint Map 6 (G)", 2D) = "white" {}
+        /*[HideInInspector]*/ [NoScaleOffset] _T2M_Layer_6_Diffuse ("Paint Map 6 (G)", 2D) = "white" {}
         [HideInInspector] _T2M_Layer_6_NormalScale("Strength", float) = 1
-        [HideInInspector] [NoScaleOffset] _T2M_Layer_6_NormalMap("Bump", 2D) = "bump" {}
+        /*[HideInInspector]*/ [NoScaleOffset] _T2M_Layer_6_NormalMap("Bump", 2D) = "bump" {}
         [HideInInspector] [NoScaleOffset] _T2M_Layer_6_Mask ("Mask", 2D) = "white" {}
         [HideInInspector] _T2M_Layer_6_uvScaleOffset("UV Scale", Vector) = (1, 1, 0, 0)
         [HideInInspector] _T2M_Layer_6_MapsUsage("Maps Usage", Vector) = (0, 0, 0, 0)
@@ -131,9 +131,9 @@ Shader "SpaceTime/Scene/TerrainMesh/Splatmap"
         [HideInInspector] _T2M_Layer_6_MaskMapRemapMax("Maskmap Remap Max", Vector) = (1, 1, 1, 1)
 
         [HideInInspector] _T2M_Layer_7_ColorTint ("Color Tint", Color) = (1, 1, 1, 1)
-        [HideInInspector] [NoScaleOffset] _T2M_Layer_7_Diffuse ("Paint Map 7 (B)", 2D) = "white" {}
+        /*[HideInInspector]*/ [NoScaleOffset] _T2M_Layer_7_Diffuse ("Paint Map 7 (B)", 2D) = "white" {}
         [HideInInspector] _T2M_Layer_7_NormalScale("Strength", float) = 1
-        [HideInInspector] [NoScaleOffset] _T2M_Layer_7_NormalMap("Bump", 2D) = "bump" {}
+        /*[HideInInspector]*/ [NoScaleOffset] _T2M_Layer_7_NormalMap("Bump", 2D) = "bump" {}
         [HideInInspector] [NoScaleOffset] _T2M_Layer_7_Mask ("Mask", 2D) = "white" {}
         [HideInInspector] _T2M_Layer_7_uvScaleOffset("UV Scale", Vector) = (1, 1, 0, 0)
         [HideInInspector] _T2M_Layer_7_MapsUsage("Maps Usage", Vector) = (0, 0, 0, 0)
@@ -146,9 +146,9 @@ Shader "SpaceTime/Scene/TerrainMesh/Splatmap"
         [HideInInspector][NoScaleOffset] _T2M_SplatMap_3("Splat Map #3 (RGBA)", 2D) = "black" {}
 
         [HideInInspector] _T2M_Layer_8_ColorTint ("Color Tint", Color) = (1, 1, 1, 1)
-        [HideInInspector] [NoScaleOffset] _T2M_Layer_8_Diffuse ("Paint Map 8 (A)", 2D) = "white" {}
+        /*[HideInInspector]*/ [NoScaleOffset] _T2M_Layer_8_Diffuse ("Paint Map 8 (A)", 2D) = "white" {}
         [HideInInspector] _T2M_Layer_8_NormalScale("Strength", float) = 1
-        [HideInInspector] [NoScaleOffset] _T2M_Layer_8_NormalMap("Bump", 2D) = "bump" {}
+        /*[HideInInspector]*/ [NoScaleOffset] _T2M_Layer_8_NormalMap("Bump", 2D) = "bump" {}
         [HideInInspector] [NoScaleOffset] _T2M_Layer_8_Mask ("Mask", 2D) = "white" {}
         [HideInInspector] _T2M_Layer_8_uvScaleOffset("UV Scale", Vector) = (1, 1, 0, 0)
         [HideInInspector] _T2M_Layer_8_MapsUsage("Maps Usage", Vector) = (0, 0, 0, 0)
