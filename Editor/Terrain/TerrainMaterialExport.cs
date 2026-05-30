@@ -19,7 +19,7 @@ namespace ST.Terrain
 
             #region Splatmap Material
             Material splatMat = TerrainBridge.exportSplatmapMaterial(data.terrain);
-            Shader   splatShader = Shader.Find("LingRen/Scene/TerrainMesh/Splatmap");
+            Shader   splatShader = Shader.Find("SpaceTime/Scene/TerrainMesh/Splatmap");
             if (splatMat != null)
             {
                 splatMat.shader = splatShader;
@@ -103,7 +103,7 @@ namespace ST.Terrain
 
         static void BuildBaseMapMaterial(TerrainExportData data, Material splatMat, string matFolder)
         {
-            Material baseMat = new Material(Shader.Find("LingRen/Scene/SceneObjBaseLit"));
+            Material baseMat = new Material(Shader.Find("SpaceTime/Scene/SceneObjLit"));
             baseMat.shaderKeywords = new string[0];
             baseMat.SetFloat("_Smoothness", 0f);
 
