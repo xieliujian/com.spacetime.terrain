@@ -22,9 +22,9 @@ namespace ST.Terrain
             float meshWidth, float meshLength, bool allPoints = false)
         {
             Vector3[] dstV = dstMesh.vertices;
-            Vector3[] dstN = dstMesh.normals;
-            Vector4[] dstT = dstMesh.tangents;
-            Vector2[] dstU = dstMesh.uv;
+            Vector3[] dstN = dstMesh.normals.Length  == dstV.Length ? dstMesh.normals  : new Vector3[dstV.Length];
+            Vector4[] dstT = dstMesh.tangents.Length == dstV.Length ? dstMesh.tangents : new Vector4[dstV.Length];
+            Vector2[] dstU = dstMesh.uv.Length       == dstV.Length ? dstMesh.uv       : new Vector2[dstV.Length];
 
             Vector3[] srcV = srcMesh.vertices;
             Vector3[] srcN = srcMesh.normals;
