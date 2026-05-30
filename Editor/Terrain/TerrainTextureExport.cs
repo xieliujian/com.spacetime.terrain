@@ -41,20 +41,37 @@ namespace ST.Terrain
             if (baseTex   != null) TerrainExportUtility.SaveTextureToDisk(baseTex,   basePath,   TextureFileType.PNG);
             if (normalTex != null)
             {
-                TerrainExportUtility.SaveTextureToDisk(normalTex, normalPath, TextureFileType.PNG);
+                Texture2D swizzled = SwizzleForUnityNormalMap(normalTex);
+                TerrainExportUtility.SaveTextureToDisk(swizzled, normalPath, TextureFileType.PNG);
                 string assetPath = TerrainExportUtility.AbsPath2AssetsPath(normalPath);
                 AssetDatabase.ImportAsset(assetPath);
                 var importer = AssetImporter.GetAtPath(assetPath) as TextureImporter;
                 if (importer != null)
                 {
-                    importer.textureType    = TextureImporterType.Default;
-                    importer.sRGBTexture    = false;
+                    importer.textureType = TextureImporterType.NormalMap;
                     importer.SaveAndReimport();
                 }
             }
 
             data.baseTexPath   = basePath;
             data.normalTexPath = normalPath;
+        }
+
+        // Unity NormalMap 导入器期望 AG 格式：X->A, Y->G, 其余为常量
+        // TTM 导出的是标准 RGB 法线 (X=R, Y=G, Z=B)，需要 swizzle
+        static Texture2D SwizzleForUnityNormalMap(Texture2D src)
+        {
+            Color[] pixels = src.GetPixels();
+            for (int i = 0; i < pixels.Length; i++)
+            {
+                float x = pixels[i].r;
+                float y = pixels[i].g;
+                pixels[i] = new Color(0f, y, 0f, x);
+            }
+            var dst = new Texture2D(src.width, src.height, TextureFormat.RGBA32, false, true);
+            dst.SetPixels(pixels);
+            dst.Apply();
+            return dst;
         }
 
         public static void GenerateSplatTexture(UnityEngine.Terrain terrain)

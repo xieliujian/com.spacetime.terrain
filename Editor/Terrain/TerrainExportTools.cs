@@ -104,11 +104,16 @@ namespace ST.Terrain
             m_NeedProcessTerrain.Clear();
 
             string runTerrainFolder = string.Format("{0}/", TerrainExportPath.GetTerrainOutputPath());
+            string assetFolder = TerrainExportUtility.AbsPath2AssetsPath(runTerrainFolder);
 
-            if (Directory.Exists(runTerrainFolder))
-                ClearAssetFiles(runTerrainFolder);
+            if (AssetDatabase.IsValidFolder(assetFolder))
+            {
+                AssetDatabase.DeleteAsset(assetFolder);
+                AssetDatabase.Refresh();
+            }
 
             TerrainExportPath.InitTempDir(runTerrainFolder);
+            AssetDatabase.Refresh();
         }
 
         public static void CollectProcessTerrain()
