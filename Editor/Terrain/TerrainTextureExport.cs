@@ -31,8 +31,9 @@ namespace ST.Terrain
 #endif
 
             Texture2D[] texs = TerrainBridge.exportBaseTexture(data.terrain, size);
-            Texture2D baseTex   = texs[0];
-            Texture2D normalTex = texs[1];
+            Texture2D baseTex   = texs != null ? texs[0] : null;
+            Texture2D normalTex = texs != null ? texs[1] : null;
+            UnityEngine.Debug.Log($"[TerrainExport] baseTex={(baseTex==null?"null":baseTex.width+"x"+baseTex.height)} normalTex={(normalTex==null?"null":normalTex.width+"x"+normalTex.height)}");
 
             string basePath   = string.Format("{0}/{1}-Basemap-Diffuse.png",   textureFolder, data.terrain.name);
             string normalPath = string.Format("{0}/{1}-Basemap-Normal.png",    textureFolder, data.terrain.name);
@@ -47,7 +48,7 @@ namespace ST.Terrain
         public static void GenerateSplatTexture(UnityEngine.Terrain terrain)
         {
             string textureFolder = TerrainExportPath.GetTerrainOutputPath() + "/texture";
-            UnityEngine.Debug.Log($"[TerrainExport] GenerateSplatTexture terrain={terrain.name} folder={textureFolder}");
+            UnityEngine.Debug.Log($"[TerrainExport] GenerateSplatTexture terrain={terrain.name} alphamapRes={terrain.terrainData.alphamapResolution} folder={textureFolder}");
             Texture2D[] splatTextures = TerrainBridge.exportSplatmapTextures(terrain, true);
             UnityEngine.Debug.Log($"[TerrainExport] splatTextures={(splatTextures == null ? "null" : splatTextures.Length.ToString())}");
             if (splatTextures == null) return;
