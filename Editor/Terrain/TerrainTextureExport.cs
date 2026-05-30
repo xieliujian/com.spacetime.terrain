@@ -11,7 +11,6 @@ namespace ST.Terrain
         public static void GenerateBaseTexture(TerrainExportData data)
         {
             string textureFolder = TerrainExportPath.GetTerrainOutputPath() + "/texture";
-            UnityEngine.Debug.Log($"[TerrainExport] GenerateBaseTexture terrain={data.terrain.name} folder={textureFolder}");
 
             int size = 512;
 #if HAS_UNITY_TERRAIN_TOOLS
@@ -33,7 +32,6 @@ namespace ST.Terrain
             Texture2D[] texs = TerrainBridge.exportBaseTexture(data.terrain, size);
             Texture2D baseTex   = texs != null ? texs[0] : null;
             Texture2D normalTex = texs != null ? texs[1] : null;
-            UnityEngine.Debug.Log($"[TerrainExport] baseTex={(baseTex==null?"null":baseTex.width+"x"+baseTex.height)} normalTex={(normalTex==null?"null":normalTex.width+"x"+normalTex.height+" fmt="+normalTex.format)}");
 
             string basePath   = string.Format("{0}/{1}-Basemap-Diffuse.png",   textureFolder, data.terrain.name);
             string normalPath = string.Format("{0}/{1}-Basemap-Normal.png",    textureFolder, data.terrain.name);
@@ -41,8 +39,7 @@ namespace ST.Terrain
             if (baseTex   != null) TerrainExportUtility.SaveTextureToDisk(baseTex,   basePath,   TextureFileType.PNG);
             if (normalTex != null)
             {
-                Texture2D swizzled = SwizzleForUnityNormalMap(normalTex);
-                TerrainExportUtility.SaveTextureToDisk(swizzled, normalPath, TextureFileType.PNG);
+                TerrainExportUtility.SaveTextureToDisk(normalTex, normalPath, TextureFileType.PNG);
                 string assetPath = TerrainExportUtility.AbsPath2AssetsPath(normalPath);
                 AssetDatabase.ImportAsset(assetPath);
                 var importer = AssetImporter.GetAtPath(assetPath) as TextureImporter;
@@ -57,32 +54,10 @@ namespace ST.Terrain
             data.normalTexPath = normalPath;
         }
 
-        // Unity NormalMap 导入器期望 AG 格式：X->A, Y->G, 其余为常量
-        // TTM 导出的是标准 RGB 法线 (X=R, Y=G, Z=B)，需要 swizzle
-        static Texture2D SwizzleForUnityNormalMap(Texture2D src)
-        {
-            Color[] pixels = src.GetPixels();
-            // 打印中心像素确认原始值
-            int mid = pixels.Length / 2;
-            UnityEngine.Debug.Log($"[TerrainExport] NormalTex center pixel: R={pixels[mid].r:F3} G={pixels[mid].g:F3} B={pixels[mid].b:F3} A={pixels[mid].a:F3}");
-            for (int i = 0; i < pixels.Length; i++)
-            {
-                float x = pixels[i].r;
-                float y = pixels[i].g;
-                pixels[i] = new Color(0f, y, 0f, x);
-            }
-            var dst = new Texture2D(src.width, src.height, TextureFormat.RGBA32, false, true);
-            dst.SetPixels(pixels);
-            dst.Apply();
-            return dst;
-        }
-
         public static void GenerateSplatTexture(UnityEngine.Terrain terrain)
         {
             string textureFolder = TerrainExportPath.GetTerrainOutputPath() + "/texture";
-            UnityEngine.Debug.Log($"[TerrainExport] GenerateSplatTexture terrain={terrain.name} alphamapRes={terrain.terrainData.alphamapResolution} folder={textureFolder}");
             Texture2D[] splatTextures = TerrainBridge.exportSplatmapTextures(terrain, true);
-            UnityEngine.Debug.Log($"[TerrainExport] splatTextures={(splatTextures == null ? "null" : splatTextures.Length.ToString())}");
             if (splatTextures == null) return;
 
             for (int i = 0; i < splatTextures.Length; i++)
