@@ -324,7 +324,7 @@ half4 UniversalFragmentPBR_Terrain(InputData inputData, SurfaceData surfaceData)
 
     //     
     #if  defined(_ADDITIONAL_LIGHTS) //&& defined(TEST_PERF1)
-    #if USE_FORWARD_PLUS
+    #if USE_FORWARD_PLUS && defined(URP_FP_POINTLIGHT_COUNT)
 	[branch] if( URP_FP_POINTLIGHT_COUNT > 0.5f )
 	#endif
     {
@@ -469,7 +469,7 @@ half4 UniversalFragmentBlinnPhong_SceneLit(InputData inputData, half3 diffuse, h
 
 
 #if  defined(_ADDITIONAL_LIGHTS) //&& defined(TEST_PERF1)
-    #if USE_FORWARD_PLUS
+    #if USE_FORWARD_PLUS && defined(URP_FP_POINTLIGHT_COUNT)
 	[branch] if( URP_FP_POINTLIGHT_COUNT > 0.5f )
 	#endif
     {

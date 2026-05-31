@@ -246,13 +246,13 @@ Shader "SpaceTime/Scene/TerrainMesh/Splatmap"
             HLSLPROGRAM
 
             // Pragmas
-            #pragma target 4.5
-        //big texture toggle 
+            #pragma target 3.5
+        //big texture toggle
         #define KYEWORD_ENABLE_BIG_TEXTURE 1
 
         #pragma vertex vert
         #pragma fragment frag
-        
+
         #define LR_SHADER_RUNTIME 1
         //#define LR_SHADER_HARMONY 1
 
@@ -284,6 +284,7 @@ Shader "SpaceTime/Scene/TerrainMesh/Splatmap"
         #define _SHADOWS_SOFT 1
 
         // #pragma multi_compile_fragment _ VT_RUNTIME
+        #define _FORWARD_PLUS 1
         #define _ADDITIONAL_LIGHTS 1
         #if !defined (SHADER_API_MOBILE)
             #define _ADDITIONAL_LIGHT_SHADOWS 1
