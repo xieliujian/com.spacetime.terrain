@@ -284,12 +284,11 @@ Shader "SpaceTime/Scene/TerrainMesh/Splatmap"
         #define _SHADOWS_SOFT 1
 
         #pragma multi_compile_fragment _ VT_RUNTIME
-        #define _FORWARD_PLUS 1
         #define _ADDITIONAL_LIGHTS 1
         #if !defined (SHADER_API_MOBILE)
             #define _ADDITIONAL_LIGHT_SHADOWS 1
             #define ADDITIONAL_LIGHT_CALCULATE_SHADOWS 1
-        #endif    
+        #endif
 #else
        // #define RENDER_LEVEL_1 1
         #pragma multi_compile_fragment _ VT_RUNTIME
