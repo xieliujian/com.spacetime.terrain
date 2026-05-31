@@ -2,6 +2,14 @@
 
 Unity Terrain → Mesh 导出管线，用于大规模场景渲染。
 
+---
+
+## ⚠️ 疑难杂症
+
+见 [readme/KnownIssues.md](readme/KnownIssues.md)
+
+---
+
 ## 功能概述
 
 将场景中的 Unity `Terrain` 对象导出为运行时可用的 LOD Mesh Prefab，整合到流式加载场景的 `RuntimeTerrainData` 目录中。
@@ -75,7 +83,3 @@ com.spacetime.terrain/
 ## 使用方式
 
 `TerrainExportWork` 由 `SceneExportWork` 中的 `ExportWorkScheduler` 统一调度，通过场景导出窗口（`SceneExportWin`）触发。
-
-## 疑难杂症
-
-见 [readme/KnownIssues.md](readme/KnownIssues.md)。
