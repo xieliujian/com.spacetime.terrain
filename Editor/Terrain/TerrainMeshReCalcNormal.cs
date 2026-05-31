@@ -86,34 +86,92 @@ namespace ST.Terrain
             GameObject goB = FindChildByName(b, lodTag);
             if (goA == null || goB == null) return;
 
-            Mesh mA = goA.GetComponent<MeshFilter>()?.sharedMesh;
-            Mesh mB = goB.GetComponent<MeshFilter>()?.sharedMesh;
+            MeshFilter mfA = goA.GetComponent<MeshFilter>();
+            MeshFilter mfB = goB.GetComponent<MeshFilter>();
+            if (mfA == null || mfB == null) return;
+
+            Mesh mA = mfA.sharedMesh;
+            Mesh mB = mfB.sharedMesh;
             if (mA == null || mB == null) return;
 
-            Vector3[] vA = mA.vertices, nA = mA.normals;
-            Vector3[] vB = mB.vertices, nB = mB.normals;
-            Vector3 posA = goA.transform.position;
-            Vector3 posB = goB.transform.position;
+            // 获取 mesh 的 asset 路径
+            string pathA = AssetDatabase.GetAssetPath(mA);
+            string pathB = AssetDatabase.GetAssetPath(mB);
+            if (string.IsNullOrEmpty(pathA) || string.IsNullOrEmpty(pathB)) return;
 
-            for (int i = 0; i < nA.Length; i++)
+            // 临时启用 Read/Write
+            bool wasReadableA = SetMeshReadable(pathA, true);
+            bool wasReadableB = SetMeshReadable(pathB, true);
+
+            try
             {
-                if ((int)vA[i].x % 128 != 0 && (int)vA[i].z % 128 != 0) continue;
-                Vector2 wa = new Vector2(posA.x + vA[i].x, posA.z + vA[i].z);
+                // 重新加载 mesh 以应用 Read/Write 设置
+                AssetDatabase.ImportAsset(pathA);
+                AssetDatabase.ImportAsset(pathB);
 
-                for (int j = 0; j < nB.Length; j++)
+                mA = mfA.sharedMesh;
+                mB = mfB.sharedMesh;
+
+                Vector3[] vA = mA.vertices, nA = mA.normals;
+                Vector3[] vB = mB.vertices, nB = mB.normals;
+                Vector3 posA = goA.transform.position;
+                Vector3 posB = goB.transform.position;
+
+                bool modified = false;
+
+                for (int i = 0; i < nA.Length; i++)
                 {
-                    Vector2 wb = new Vector2(posB.x + vB[j].x, posB.z + vB[j].z);
-                    if (System.Math.Abs(wa.x - wb.x) < 0.1f &&
-                        System.Math.Abs(wa.y - wb.y) < 0.1f)
+                    if ((int)vA[i].x % 128 != 0 && (int)vA[i].z % 128 != 0) continue;
+                    Vector2 wa = new Vector2(posA.x + vA[i].x, posA.z + vA[i].z);
+
+                    for (int j = 0; j < nB.Length; j++)
                     {
-                        nA[i] = nB[j] = (nA[i] + nB[j]) / 2f;
-                        break;
+                        Vector2 wb = new Vector2(posB.x + vB[j].x, posB.z + vB[j].z);
+                        if (System.Math.Abs(wa.x - wb.x) < 0.1f &&
+                            System.Math.Abs(wa.y - wb.y) < 0.1f)
+                        {
+                            nA[i] = nB[j] = (nA[i] + nB[j]) / 2f;
+                            modified = true;
+                            break;
+                        }
                     }
                 }
+
+                if (modified)
+                {
+                    mA.normals = nA;
+                    mB.normals = nB;
+                }
+            }
+            finally
+            {
+                // 恢复原始 Read/Write 设置
+                if (!wasReadableA) SetMeshReadable(pathA, false);
+                if (!wasReadableB) SetMeshReadable(pathB, false);
+
+                // 重新导入以应用设置
+                if (!wasReadableA) AssetDatabase.ImportAsset(pathA);
+                if (!wasReadableB) AssetDatabase.ImportAsset(pathB);
+            }
+        }
+
+        /// <summary>
+        /// 设置 Mesh 的 Read/Write 属性。
+        /// </summary>
+        /// <returns>返回修改前的 Read/Write 状态</returns>
+        static bool SetMeshReadable(string assetPath, bool readable)
+        {
+            ModelImporter importer = AssetImporter.GetAtPath(assetPath) as ModelImporter;
+            if (importer == null) return false;
+
+            bool wasReadable = importer.isReadable;
+            if (wasReadable != readable)
+            {
+                importer.isReadable = readable;
+                importer.SaveAndReimport();
             }
 
-            mA.normals = nA;
-            mB.normals = nB;
+            return wasReadable;
         }
 
         static GameObject FindChildByName(GameObject parent, string keyword)

@@ -20,6 +20,7 @@ namespace ST.Terrain
             m_Steps.Add(("GenerateMaterial",        TerrainExportTools.GenerateMaterial));
             m_Steps.Add(("ReRefreshRes",            TerrainExportTools.ReRefreshRes));
             m_Steps.Add(("GeneratePrefab",          TerrainExportTools.GeneratePrefab));
+            m_Steps.Add(("FuseNormals",             TerrainMeshReCalcNormal.FuseSectorNormalInfo));
             m_Steps.Add(("Clear",                   TerrainExportTools.Clear));
         }
 
