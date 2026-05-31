@@ -31,7 +31,7 @@ namespace ST.Terrain
         {
             var extractor = new TerrainToMeshDataExtractor(terrain.terrainData);
             Texture2D diffuse = extractor.ExportBasemapDiffuseTexture(size, false, false);
-            Texture2D normal  = extractor.ExportBasemapNormalTexture(size, false);
+            Texture2D normal  = extractor.ExportBasemapNormalTexture(size, true);
             return new Texture2D[] { diffuse, normal };
         }
 

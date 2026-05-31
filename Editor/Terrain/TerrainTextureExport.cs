@@ -39,8 +39,7 @@ namespace ST.Terrain
             if (baseTex   != null) TerrainExportUtility.SaveTextureToDisk(baseTex,   basePath,   TextureFileType.PNG);
             if (normalTex != null)
             {
-                Texture2D fixed_normal = SwapRBChannels(normalTex);
-                TerrainExportUtility.SaveTextureToDisk(fixed_normal, normalPath, TextureFileType.PNG);
+                TerrainExportUtility.SaveTextureToDisk(normalTex, normalPath, TextureFileType.PNG);
                 string assetPath = TerrainExportUtility.AbsPath2AssetsPath(normalPath);
                 AssetDatabase.ImportAsset(assetPath);
                 var importer = AssetImporter.GetAtPath(assetPath) as TextureImporter;
@@ -54,22 +53,6 @@ namespace ST.Terrain
 
             data.baseTexPath   = basePath;
             data.normalTexPath = normalPath;
-        }
-
-        // TTM ExportBasemapNormalTexture 输出 BGRA 通道顺序，需要交换 R/B 还原为标准 RGB 法线
-        static Texture2D SwapRBChannels(Texture2D src)
-        {
-            Color32[] pixels = src.GetPixels32();
-            for (int i = 0; i < pixels.Length; i++)
-            {
-                byte r = pixels[i].r;
-                pixels[i].r = pixels[i].b;
-                pixels[i].b = r;
-            }
-            var dst = new Texture2D(src.width, src.height, TextureFormat.RGBA32, false, true);
-            dst.SetPixels32(pixels);
-            dst.Apply();
-            return dst;
         }
 
         public static void GenerateSplatTexture(UnityEngine.Terrain terrain)
