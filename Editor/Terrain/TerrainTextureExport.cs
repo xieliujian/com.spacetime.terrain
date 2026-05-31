@@ -46,7 +46,20 @@ namespace ST.Terrain
                 if (importer != null)
                 {
                     importer.textureType = TextureImporterType.NormalMap;
-                    importer.textureCompression = TextureImporterCompression.Uncompressed;
+                    importer.wrapMode = TextureWrapMode.Clamp;
+                    importer.SaveAndReimport();
+                }
+            }
+
+            // 设置 Basemap Diffuse 贴图的 Wrap 模式为 Clamp，消除 LOD 接缝
+            if (baseTex != null)
+            {
+                string assetPath = TerrainExportUtility.AbsPath2AssetsPath(basePath);
+                AssetDatabase.ImportAsset(assetPath);
+                var importer = AssetImporter.GetAtPath(assetPath) as TextureImporter;
+                if (importer != null)
+                {
+                    importer.wrapMode = TextureWrapMode.Clamp;
                     importer.SaveAndReimport();
                 }
             }
@@ -71,6 +84,7 @@ namespace ST.Terrain
                 if (importer != null)
                 {
                     importer.sRGBTexture = false;
+                    importer.wrapMode = TextureWrapMode.Clamp;  // 设置为 Clamp 消除 LOD 接缝
                     importer.SaveAndReimport();
                 }
             }
