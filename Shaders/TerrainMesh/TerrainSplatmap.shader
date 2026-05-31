@@ -253,7 +253,7 @@ Shader "SpaceTime/Scene/TerrainMesh/Splatmap"
         #pragma vertex vert
         #pragma fragment frag
         
-        //#define LR_SHADER_RUNTIME 1
+        #define LR_SHADER_RUNTIME 1
         //#define LR_SHADER_HARMONY 1
 
         // #pragma multi_compile _ TEST_PERF0
