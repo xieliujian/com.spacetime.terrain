@@ -246,7 +246,7 @@ Shader "SpaceTime/Scene/TerrainMesh/Splatmap"
             HLSLPROGRAM
 
             // Pragmas
-            #pragma target 3.5
+            #pragma target 3.0
         //big texture toggle
         #define KYEWORD_ENABLE_BIG_TEXTURE 1
 
@@ -276,15 +276,8 @@ Shader "SpaceTime/Scene/TerrainMesh/Splatmap"
 #if defined(LR_SHADER_RUNTIME)
         #define DIRLIGHTMAP_COMBINED 1
         #define LIGHTMAP_ON 1
-       // #pragma multi_compile _ LIGHTMAP_SHADOW_MIXING
         #define SHADOWS_SHADOWMASK 1
-        //#define RENDER_LEVEL_1 1
-        //#pragma multi_compile _ _MAIN_LIGHT_SHADOWS
-        //#pragma multi_compile _ _ADDITIONAL_LIGHTS
         #define _SHADOWS_SOFT 1
-
-        // #pragma multi_compile_fragment _ VT_RUNTIME
-        #define _FORWARD_PLUS 1
         #define _ADDITIONAL_LIGHTS 1
         #if !defined (SHADER_API_MOBILE)
             #define _ADDITIONAL_LIGHT_SHADOWS 1
