@@ -75,3 +75,7 @@ com.spacetime.terrain/
 ## 使用方式
 
 `TerrainExportWork` 由 `SceneExportWork` 中的 `ExportWorkScheduler` 统一调度，通过场景导出窗口（`SceneExportWin`）触发。
+
+## 疑难杂症
+
+见 [readme/KnownIssues.md](readme/KnownIssues.md)。
