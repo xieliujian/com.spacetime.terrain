@@ -283,7 +283,7 @@ Shader "SpaceTime/Scene/TerrainMesh/Splatmap"
         //#pragma multi_compile _ _ADDITIONAL_LIGHTS
         #define _SHADOWS_SOFT 1
 
-        #pragma multi_compile_fragment _ VT_RUNTIME
+        // #pragma multi_compile_fragment _ VT_RUNTIME
         #define _ADDITIONAL_LIGHTS 1
         #if !defined (SHADER_API_MOBILE)
             #define _ADDITIONAL_LIGHT_SHADOWS 1
@@ -291,7 +291,7 @@ Shader "SpaceTime/Scene/TerrainMesh/Splatmap"
         #endif
 #else
        // #define RENDER_LEVEL_1 1
-        #pragma multi_compile_fragment _ VT_RUNTIME
+        // #pragma multi_compile_fragment _ VT_RUNTIME
         #pragma shader_feature _ONLY_COLOR
         #pragma shader_feature _ONLY_GI
         #pragma shader_feature _ONLY_SM
@@ -312,7 +312,7 @@ Shader "SpaceTime/Scene/TerrainMesh/Splatmap"
         //#pragma multi_compile _ _SOLIDCOLORTEST
             
             //#pragma multi_compile _ _GLOBAL_ENABLE
-            #pragma shader_feature _TERRAIN_BLEND_HEIGHT
+            // #pragma shader_feature _TERRAIN_BLEND_HEIGHT
             // Defines
             #define _NORMALMAP 1
             #define _NORMAL_DROPOFF_TS 1
